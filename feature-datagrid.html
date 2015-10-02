@@ -1,0 +1,84 @@
+<html>
+
+<head>
+
+    <script type="text/javascript" src="http://api.giscloud.com/1/api.js?modules=all"></script>
+
+    <link type="text/css" rel="stylesheet" media="all" href="http://api.giscloud.com/1/giscloud.ui.css?nch=1431960837&modules=all" />
+
+    <style>
+    #mapViewer {
+        width: 100%;
+        height: 500px;
+    }
+    #datagrid {
+        height: 400px;
+    }
+    body {
+        margin: 0px;
+    }
+    </style>
+
+
+    <script>
+    var viewer, layerList,
+        mapId = 16594,
+        test = {},
+        featuregrid;
+
+    giscloud.ready(function() {
+        test.viewer = new giscloud.Viewer("mapViewer", mapId);
+
+        test.featuregrid = new giscloud.ui.FeatureDatagrid('#datagrid', {
+            viewer: test.viewer,
+            // activeLayerId:679,
+            datagridOpts:{
+                "ordering": true,
+                "iconsForPaginate":true,
+                "sPaginationType": "input"
+            }
+        });
+
+        test.toolbar = new giscloud.ui.Toolbar({
+                viewer: test.viewer,
+                container: "toolbar",
+                defaultTools: ["pan", "zoom", "full", "measure", "select"]
+        });
+
+
+        test.featuregrid.on("row-select.gc-feature-datagrid"   , consoleLog);
+        test.featuregrid.on("header-click.gc-feature-datagrid" , consoleLog);
+        test.featuregrid.on("reload-before.gc-feature-datagrid", consoleLog);
+        test.featuregrid.on("reload-after.gc-feature-datagrid" , consoleLog);
+    });
+
+    function consoleLog(e, o) {
+        console.log("event", e);
+        console.log("objact passed", o);
+        taLog(e.type);
+    }
+
+    function taLog(textlog){
+        console.log(textlog);
+        var text =  textlog+ "\n" +  $("#ta-log").val();
+        $("#ta-log").val(text);
+    }
+
+
+    </script>
+</head>
+
+<body>
+
+
+    <div id="mapViewer"></div>
+    <div id="datagrid_container">
+        <div id="datagrid"></div>
+    </div>
+    <div id="toolbar"></div>
+
+    <textarea style="margin:10px 0px; width: 733px;height: 87px;" id="ta-log"></textarea>
+
+</body>
+
+</html>
